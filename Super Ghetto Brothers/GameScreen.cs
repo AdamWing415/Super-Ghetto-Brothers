@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace Super_Ghetto_Brothers
 {
@@ -17,6 +18,8 @@ namespace Super_Ghetto_Brothers
         int count, p1X, p1Y, p1Width, p1Height, gX, gY, gW, gH, p1YStored, trueX, pX, pY, pW, pH;
         public static int lives;
         bool leftArrowDown, rightArrowDown, upArrowDown, grounded, jump;
+
+       
 
         private void KeyDown(object sender, PreviewKeyDownEventArgs e)
         {
@@ -65,14 +68,15 @@ namespace Super_Ghetto_Brothers
         public GameScreen()
         {
             InitializeComponent();
-            lives = 3;
-            start();
-
-
         }
 
-        private void start()
+        private void GameScreen_Load(object sender, EventArgs e)
         {
+            lives = 3; // this will reset lives everytime you switch back to this form, so when you switch back after a death, lives wont actually go down
+
+   
+            this.Focus(); // need this to register key input !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+             // no need for a start method when _Load exists
             this.BackColor = Color.Black;
             p1Width = 45;
             p1Height = 90;
@@ -91,24 +95,9 @@ namespace Super_Ghetto_Brothers
             count = 0;
         }
 
-        public void dead()
-        {
-            // f is the form that this control is on - ("this" is the current User Control) 
-            Form f = this.FindForm();
-            f.Controls.Remove(this);
-            // Create an instance of the SecondScreen 
-            GameOver go = new GameOver();
-            // Add the User Control to the Form 
-            f.Controls.Add(go);
-        }
-       
-        private void GameScreen_Load(object sender, EventArgs e)
-        {
-            
-        }
-
         private void gameTimer_Tick(object sender, EventArgs e)
         {
+
             if (leftArrowDown)
             {
                 if (p1X > 100)
@@ -132,12 +121,12 @@ namespace Super_Ghetto_Brothers
                         b.x++;
                     }
                 }
-               
-                
+
+
             }
             if (rightArrowDown)
             {
-                if (p1X < this.Width-200)
+                if (p1X < this.Width - 200)
                 {
                     p1X += 5;
                     if (p1Width < 0)
@@ -168,7 +157,7 @@ namespace Super_Ghetto_Brothers
                     p1YStored = p1Y;
 
                 }
-                
+
                 if (p1Y + 150 > p1YStored && jump)
                 {
                     if (p1YStored - p1Y > 90)
@@ -190,7 +179,7 @@ namespace Super_Ghetto_Brothers
                 }
             }
 
-            
+
             if (count > 200 && this.BackColor != Color.LightCyan)
             {
                 this.BackColor = Color.LightCyan;
@@ -218,7 +207,7 @@ namespace Super_Ghetto_Brothers
 
             //}
 
-            p1Bot = new Rectangle(p1X, p1Y+p1Height, 30, 1);
+            p1Bot = new Rectangle(p1X, p1Y + p1Height, 30, 1);
             p1Top = new Rectangle(p1X, p1Y, 30, 1);
 
             foreach (Ground b in floorTiles)
@@ -233,12 +222,12 @@ namespace Super_Ghetto_Brothers
                 }
                 else
                 {
-                    grounded = false;    
+                    grounded = false;
                 }
             }
             foreach (Platform p in platforms)
             {
-                Rectangle coPlat = new Rectangle(p.x, p.y,p.width, p.height);
+                Rectangle coPlat = new Rectangle(p.x, p.y, p.width, p.height);
                 //delete block on hit (needs fix)
                 //if (p1Top.IntersectsWith(coPlat))
                 //{
@@ -266,8 +255,9 @@ namespace Super_Ghetto_Brothers
                 {
                     p1Y += 8;
                 }
-              
+
             }
+            
             if (p1Y > this.Height)
             {
                 lives--;
@@ -280,21 +270,35 @@ namespace Super_Ghetto_Brothers
         {
             if (count < 200)
             {
-                e.Graphics.DrawString($"{lives}X Lives \n Level {level}", this.Font, brush, this.Width /2 - 50, this.Height / 2);
+                e.Graphics.DrawString($"{lives}X Lives \n Level {level}", this.Font, brush, this.Width / 2 - 50, this.Height / 2);
             }
             else if (count > 200)
             {
                 foreach (Ground g in floorTiles)
                 {
-                    e.Graphics.DrawImage(groundImage, g.x, g.y, g.width, g.height);   
+                    e.Graphics.DrawImage(groundImage, g.x, g.y, g.width, g.height);
                 }
                 foreach (Platform p in platforms)
                 {
                     e.Graphics.DrawImage(groundImage, p.x, p.y, p.width, p.height);
                 }
                 e.Graphics.DrawImage(player1Image, p1X, p1Y, p1Width, p1Height);
-                
-            } 
+
+            }
+        }
+
+        public void dead()
+        {
+            gameTimer.Stop(); // this is the key item !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            
+
+
+            Form Form1 = this.FindForm();
+            Form1.Controls.Remove(this);
+            GameOverScreen gos = new GameOverScreen();
+            Form1.Controls.Add(gos);
+
+            gos.Location = new Point(0, 0);
         }
     }
 }

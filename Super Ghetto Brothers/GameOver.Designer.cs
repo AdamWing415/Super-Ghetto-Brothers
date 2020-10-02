@@ -1,6 +1,6 @@
 ﻿namespace Super_Ghetto_Brothers
 {
-    partial class GameOver
+    partial class GameOverScreen
     {
         /// <summary> 
         /// Required designer variable.
@@ -30,13 +30,14 @@
         {
             this.SuspendLayout();
             // 
-            // GameOver
+            // GameOverScreen
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.Black;
-            this.Name = "GameOver";
-            this.Size = new System.Drawing.Size(800, 450);
+            this.BackColor = System.Drawing.Color.Maroon;
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Name = "GameOverScreen";
+            this.Size = new System.Drawing.Size(1067, 554);
             this.Load += new System.EventHandler(this.GameOver_Load);
             this.ResumeLayout(false);
 

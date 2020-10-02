@@ -37,12 +37,10 @@ namespace Super_Ghetto_Brothers
         public void startGame()
         {
             // f is the form that this control is on - ("this" is the current User Control) 
-            Form f = this.FindForm();
-            f.Controls.Remove(this);
-            // Create an instance of the SecondScreen 
+            Form Form1 = this.FindForm();
+            Form1.Controls.Remove(this);
             GameScreen gs = new GameScreen();
-            // Add the User Control to the Form 
-            f.Controls.Add(gs);
+            Form1.Controls.Add(gs);
         }
     }
 }

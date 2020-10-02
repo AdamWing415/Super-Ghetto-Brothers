@@ -22,13 +22,10 @@ namespace Super_Ghetto_Brothers
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            // Create an instance of the MainScreen 
-
+            Form Form1 = this.FindForm();
+            Form1.Controls.Remove(this);
             MainScreen ms = new MainScreen();
-
-            // Add the User Control to the Form 
-
-            this.Controls.Add(ms);
+            Form1.Controls.Add(ms);
         }
     }
 }
